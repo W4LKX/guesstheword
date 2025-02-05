@@ -44,12 +44,25 @@
             color: white;
             text-decoration: none;
             border-radius: 5px;
+            border: none;
+            cursor: pointer;
         }
         .btn-danger {
             background-color: #dc3545;
         }
         .btn:hover {
             opacity: 0.8;
+        }
+        .disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            width: 200px;
+            text-align: center;
         }
     </style>
 </head>
@@ -74,9 +87,31 @@
 
     <div class="container">
         <a href="/" class="btn">Back to Home</a>
+        <br>
+
+        <!-- ช่องกรอกชื่อผู้ใช้ -->
+        <input type="text" id="username" placeholder="Enter Username" oninput="checkUser()">
+        <br>
+
+        <!-- ปุ่ม Reset Career -->
         <form action="{{ url_for('reset_career') }}" method="post" style="display:inline;">
-            <button type="submit" class="btn btn-danger">Reset Career</button>
+            <button type="submit" id="resetBtn" class="btn btn-danger disabled" disabled>Reset Career</button>
         </form>
     </div>
+
+    <script>
+        function checkUser() {
+            var username = document.getElementById("username").value;
+            var resetBtn = document.getElementById("resetBtn");
+
+            if (username === "mirabitzwalk") {
+                resetBtn.disabled = false;
+                resetBtn.classList.remove("disabled");
+            } else {
+                resetBtn.disabled = true;
+                resetBtn.classList.add("disabled");
+            }
+        }
+    </script>
 </body>
 </html>
