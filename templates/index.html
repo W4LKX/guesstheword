@@ -151,7 +151,7 @@
         <!-- ฟอร์มทายคำ -->
         {% if not result %}
         <form action="/check_answer" method="post">
-            <input type="text" name="user_answer" placeholder="Guess the word for this image" required autofocus> <!-- เพิ่ม autofocus -->
+            <input type="text" name="user_answer" placeholder="Guess the word for this image" required autofocus autocomplete="off">
             <input type="hidden" name="correct_answer" value="{{ word }}">
             <input type="hidden" name="image" value="{{ image }}">
             <button type="submit">Guess</button>
