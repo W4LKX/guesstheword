@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Word Game</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', sans-serif;
+            text-align: center;
+            background-color: #FFEC99;
+            color: #333;
+            margin-top: 50px;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #FF6347;
+            margin-bottom: 30px;
+        }
+
+        img {
+            width: 250px;
+            height: 250px;
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-answer {
+            font-size: 1.5em;
+            color: #FF4500;
+            margin-top: 20px;
+        }
+
+        .user-answer strong {
+            font-size: 1.5em; /* ปรับขนาดของข้อความคะแนนให้เท่ากับคำที่ผู้เล่นพิมพ์ */
+        }
+
+        input[type="text"] {
+            padding: 15px;
+            width: 250px;
+            font-size: 1.5em;
+            margin-top: 20px;
+            border-radius: 10px;
+            border: 2px solid #FF6347;
+            transition: 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #32CD32;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.5em;
+            background-color: #FF6347;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #FF4500;
+        }
+
+        .restart-btn {
+            margin-top: 30px;
+            padding: 15px 30px;
+            font-size: 1.5em;
+            background-color: #32CD32;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .restart-btn:hover {
+            background-color: #228B22;
+        }
+
+        .home-btn {
+            margin-top: 30px;
+            padding: 15px 30px;
+            font-size: 1.5em;
+            background-color: #1E90FF;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .home-btn:hover {
+            background-color: #1C86EE;
+        }
+
+        .score {
+            font-size: 2em;
+            color: #4B0082;
+            margin-top: 30px;
+        }
+
+        .game-container {
+            padding: 20px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            // ตรวจสอบว่าเกิดการรีเฟรชหรือไม่
+            if (performance.navigation.type == 1) {
+                window.location.href = '/';
+            }
+        }
+    
+        // การตรวจจับ F5 หรือการรีเฟรชแบบอื่นๆ
+        window.onbeforeunload = function(event) {
+            // ถ้าผู้ใช้กำลังรีเฟรช
+            if (event.clientY < 0) {
+                window.location.href = '/';
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <div class="game-container">
+        <h1>Guess the Word Game</h1>
+
+        <!-- แสดงคะแนนปัจจุบัน -->
+        <p>Your current score: {{ score }}</p>
+
+        <!-- แสดงภาพคำถามเมื่อผู้เล่นยังไม่ได้ตอบ -->
+        {% if image is not none and result is none %}
+        <img src="{{ url_for('static', filename='images/' + image) }}" alt="Result image">
+        {% endif %}
+
+        <!-- ฟอร์มทายคำ -->
+        {% if not result %}
+        <form action="/check_answer" method="post">
+            <input type="text" name="user_answer" placeholder="Guess the word for this image" required autofocus> <!-- เพิ่ม autofocus -->
+            <input type="hidden" name="correct_answer" value="{{ word }}">
+            <input type="hidden" name="image" value="{{ image }}">
+            <button type="submit">Guess</button>
+        </form>
+        {% endif %}
+
+        <!-- แสดงผลคำตอบเมื่อทายเสร็จแล้ว -->
+        {% if result %}
+            <div class="result {% if 'Incorrect' in result %}incorrect-result{% endif %}">
+                <p>{{ result }}</p>
+            </div>
+            
+            <!-- แสดงภาพผลลัพธ์ -->
+            {% if 'Incorrect' in result %}
+                <img src="{{ url_for('static', filename='images/' + image) }}" alt="{{ result }}"/>
+            {% endif %}
+
+            <!-- ถ้าผิดจะแสดงคำตอบที่ผู้เล่นเขียน -->
+            {% if user_answer_display %}
+                <p>You guessed: <strong>{{ user_answer_display }}</strong></p>
+            {% endif %}
+
+            <!-- ถ้าผิดแสดงปุ่มเริ่มใหม่ และ ปุ่มกลับหน้า Home -->
+            {% if 'Incorrect' in result %}
+            <div class="button-container">
+                <form action="/restart" method="get">
+                    <button class="restart-btn">Restart</button>
+                </form>
+                <form action="/" method="get">
+                    <button class="home-btn">Home</button>
+                </form>
+            </div>
+            {% endif %}
+        {% endif %}
+
+        <!-- ถ้าทายครบแล้วให้กลับไปที่หน้า home ทันที -->
+        {% if not image %}
+            <script>
+                window.location.href = "/";
+            </script>
+        {% endif %}
+    </div>
+
+</body>
+</html>

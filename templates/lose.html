@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Word - Incorrect</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', sans-serif;
+            text-align: center;
+            background-color: #FFEC99;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            margin: 0; /* ปรับ margin ของ body */
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #FF6347;
+            margin-bottom: 20px; /* ลดระยะห่างด้านล่างของหัวข้อ */
+        }
+
+        .result {
+            font-size: 2em;
+            color: #FF6347;
+            margin-top: 20px;
+        }
+
+        .user-answer {
+            font-size: 1.5em;
+            color: #FF4500;
+            margin-top: 20px;
+        }
+
+        .user-answer strong {
+            font-size: 1.5em; /* ทำให้ขนาดข้อความคะแนนเท่ากับคำที่ผู้เล่นพิมพ์ */
+        }
+
+        img {
+            width: 250px;
+            height: 250px;
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .restart-btn, .home-btn {
+            padding: 15px 30px;
+            font-size: 1.5em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .restart-btn {
+            background-color: #4CAF50; /* สีเขียว */
+            color: white;
+        }
+
+        .home-btn {
+            background-color: #007BFF; /* สีฟ้า */
+            color: white;
+        }
+
+        .restart-btn:hover {
+            background-color: #45a049; /* สีเขียวเข้มเมื่อ hover */
+        }
+
+        .home-btn:hover {
+            background-color: #0056b3; /* สีน้ำเงินเข้มเมื่อ hover */
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px; /* ลดระยะห่างระหว่างปุ่ม */
+        }
+
+        /* ปรับฟอนต์สำหรับคะแนนให้เป็นสีเดียวกับ "You guessed:" */
+        .score {
+            font-size: 1.5em;
+            color: #FF4500; /* เปลี่ยนสีให้ตรงกับสีของคำที่ผู้เล่นพิมพ์ผิด */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Incorrect Answer!</h1>
+    <p class="result">{{ result }}</p>
+    <p class="user-answer">You guessed: <span>{{ user_answer }}</span></p>
+    <p class="score">Your current score: <span>{{ score }}</span></p>
+    <img src="{{ url_for('static', filename='images/' + image) }}" alt="Incorrect Image">
+
+    <div class="button-container">
+        <form action="/restart" method="get">
+            <button class="restart-btn">Restart</button>
+        </form>
+        <form action="/" method="get">
+            <button class="home-btn">Home</button>
+        </form>
+    </div>
+
+</body>
+</html>

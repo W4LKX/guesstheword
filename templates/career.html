@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .container {
+            margin: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <h1>Game History</h1>
+    <p>Total Games Played: <strong>{{ total_games }}</strong></p>
+
+    <table>
+        <tr>
+            <th>Rank</th>
+            <th>Score</th>
+            <th>Date</th>
+        </tr>
+        {% for game in game_history %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ game['score'] }}</td>
+            <td>{{ game['date'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div class="container">
+        <a href="/" class="btn">Back to Home</a>
+        <form action="{{ url_for('reset_career') }}" method="post" style="display:inline;">
+            <button type="submit" class="btn btn-danger">Reset Career</button>
+        </form>
+    </div>
+</body>
+</html>

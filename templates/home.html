@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Word Game</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center; /* จัดแนวนอน */
+            align-items: center; /* จัดแนวตั้ง */
+            height: 100vh; /* ใช้ความสูงเต็มหน้าจอ */
+            margin: 0;
+            font-family: 'Comic Sans MS', sans-serif;
+            background-color: #FFEC99; /* สีพื้นหลังเดียวกับหน้า */
+            color: #333;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #FF6347;
+            margin-bottom: 30px;
+        }
+
+        .home-btn, .credit-btn, .history-btn {
+            margin-top: 20px;
+            padding: 15px 30px; /* ขนาดของปุ่ม */
+            font-size: 1.5em; /* ขนาดของข้อความ */
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 200px; /* กำหนดความกว้างของปุ่มให้เท่ากัน */
+        }
+
+        .home-btn {
+            background-color: #1E90FF;
+            color: white;
+        }
+
+        .home-btn:hover {
+            background-color: #1C86EE;
+        }
+
+        .credit-btn {
+            background-color: #FFD700;
+            color: white;
+        }
+
+        .credit-btn:hover {
+            background-color: #DAA520;
+        }
+
+        .history-btn {
+            background-color: #32CD32;
+            color: white;
+        }
+
+        .history-btn:hover {
+            background-color: #28A745;
+        }
+    </style>
+    <script>
+        // เมื่อหน้าเว็บโหลดใหม่ (F5 หรือการรีเฟรช)
+        window.onload = function() {
+            // ถ้าผู้ใช้กด F5 หรือรีเฟรช, จะรีไดเร็กต์ไปที่หน้า home
+            if (performance.navigation.type == 1) {
+                window.location.href = '/';
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <div>
+        <h1>Welcome to Guess the Word Game</h1>
+        
+        <!-- ปุ่มเริ่มเกมใหม่ -->
+        <form action="/start_game" method="get">
+            <button class="home-btn">Start Game</button>
+        </form>
+
+         <!-- ปุ่มไปหน้าประวัติการเล่น -->
+         <form action="/history" method="get">
+            <button class="history-btn">Career</button>
+        </form>       
+
+        <!-- ลิงค์ไปที่หน้าข้อมูลเครดิต -->
+        <form action="/credit" method="get">
+            <button class="credit-btn">Credits</button>
+        </form>
+
+    </div>
+
+</body>
+</html>

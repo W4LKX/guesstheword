@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You Win!</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', sans-serif;
+            background-color: #FFEC99;
+            color: #333;
+            display: flex;
+            justify-content: center; /* จัดกลางแนวนอน */
+            align-items: center; /* จัดกลางแนวตั้ง */
+            height: 100vh; /* ให้เต็มพื้นที่หน้าจอ */
+            margin: 0;
+        }
+        .container {
+            text-align: center; /* ให้ข้อความทั้งหมดอยู่ตรงกลาง */
+        }
+        h1 {
+            font-size: 3em;
+            color: black; /* เปลี่ยนสีข้อความเป็นสีดำ */
+            margin-bottom: 30px;
+        }
+        p {
+            font-size: 2em;  /* ขนาดตัวอักษรของคะแนน */
+            color: #4B0082;
+            margin-top: 20px;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 1.5em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .next-btn {
+            background-color: #32CD32; /* ปุ่มสีเขียว */
+            color: white;
+        }
+        .next-btn:hover {
+            background-color: #228B22; /* สีเขียวเข้มเมื่อ hover */
+        }
+        .home-btn {
+            background-color: #1E90FF; /* ปุ่มสีฟ้า */
+            color: white;
+        }
+        .home-btn:hover {
+            background-color: #1C86EE; /* สีฟ้าเข้มเมื่อ hover */
+        }
+        img {
+            width: 300px; /* ขนาดรูปภาพ */
+            height: auto;
+            margin-bottom: 30px; /* เพิ่มระยะห่างจากรูป */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- เพิ่มรูปภาพ congratulations.gif ที่ด้านบนสุด -->
+        <img src="{{ url_for('static', filename='images/congratulations.gif') }}" alt="Congratulations">
+
+        <h1>Congratulations! You Win!</h1> <!-- เปลี่ยนสีข้อความตรงนี้ -->
+        <p>Your score: {{ score }}</p> <!-- ขนาดตัวอักษรเพิ่มขึ้นที่นี่ -->
+
+        <!-- ปุ่ม Next Level อยู่ซ้าย, Home อยู่ขวา -->
+        <div class="button-container">
+            <form action="/start_game" method="get">
+                <button class="next-btn">Next Level</button>
+            </form>
+            <form action="/" method="get">
+                <button class="home-btn">Home</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
