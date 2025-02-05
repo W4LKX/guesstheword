@@ -57,12 +57,80 @@
             background-color: #ccc;
             cursor: not-allowed;
         }
-        input {
-            padding: 10px;
-            font-size: 16px;
-            margin-bottom: 10px;
+        
+        /* จัดให้อยู่บรรทัดเดียวกัน */
+        .reset-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .reset-container input {
             width: 200px;
             text-align: center;
+            height: 40px;
+            font-size: 16px;
+        }
+        .reset-container button {
+            height: 40px;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            width: 300px;
+        }
+        .modal button {
+            padding: 10px 20px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .modal button:hover {
+            opacity: 0.8;
+        }
+
+        /* Notification Toast */
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #28a745;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        /* ข้อความแจ้งเตือน */
+        .warning {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
         }
     </style>
 </head>
@@ -89,28 +157,79 @@
         <a href="/" class="btn">Back to Home</a>
         <br>
 
-        <!-- ช่องกรอกชื่อผู้ใช้ -->
-        <input type="text" id="username" placeholder="Enter Username" oninput="checkUser()">
-        <br>
+        <div class="reset-container">
+            <!-- ช่องกรอกรหัสผ่าน -->
+            <input type="password" id="username" placeholder="Enter Username" oninput="checkUser()">
+            
+            <form id="resetForm" action="{{ url_for('reset_career') }}" method="post">
+                <button type="button" id="resetBtn" class="btn btn-danger disabled" disabled onclick="showModal()">Reset Career</button>
+            </form>
+        </div>
 
-        <!-- ปุ่ม Reset Career -->
-        <form action="{{ url_for('reset_career') }}" method="post" style="display:inline;">
-            <button type="submit" id="resetBtn" class="btn btn-danger disabled" disabled>Reset Career</button>
-        </form>
+        <!-- ข้อความแจ้งเตือนหากพิมพ์ภาษาไทย -->
+        <p id="warningText" class="warning">Please use English characters only</p>
     </div>
+
+    <!-- Confirmation Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <p>Are you sure you want to reset?</p>
+            <button onclick="confirmReset()">Yes</button>
+            <button onclick="closeModal()">No</button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">Reset Successful</div>
 
     <script>
         function checkUser() {
             var username = document.getElementById("username").value;
             var resetBtn = document.getElementById("resetBtn");
+            var warningText = document.getElementById("warningText");
 
-            if (username === "mirabitzwalk") {
+            // ตรวจสอบว่าเป็นภาษาไทย
+            if (/[\u0E00-\u0E7F]/.test(username)) {  // ถ้ามีตัวอักษรภาษาไทย
+                warningText.style.display = "block"; // แสดงข้อความแจ้งเตือน
+            } else {
+                warningText.style.display = "none"; // ซ่อนข้อความแจ้งเตือน
+            }
+
+            // เช็คว่ารหัสผ่านถูกต้องหรือไม่
+            if (username === "mirabitzwalk") {  
                 resetBtn.disabled = false;
                 resetBtn.classList.remove("disabled");
             } else {
                 resetBtn.disabled = true;
                 resetBtn.classList.add("disabled");
             }
+        }
+
+        function showModal() {
+            document.getElementById("myModal").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("myModal").style.display = "none";
+        }
+
+        function confirmReset() {
+            closeModal();
+
+            var toast = document.getElementById("toast");
+            toast.style.visibility = "visible";
+            toast.style.opacity = "1";
+
+            setTimeout(function() {
+                toast.style.opacity = "0";
+                setTimeout(function() {
+                    toast.style.visibility = "hidden";
+                }, 500);
+            }, 5000);
+
+            setTimeout(function() {
+                document.getElementById("resetForm").submit();
+            }, 1000);
         }
     </script>
 </body>
